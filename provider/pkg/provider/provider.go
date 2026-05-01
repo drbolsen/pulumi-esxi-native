@@ -523,7 +523,10 @@ func (p *esxiProvider) diffState(olds *structpb.Struct, news *structpb.Struct, l
 
 // checkpointObject puts inputs in the `__inputs` field of the state.
 func checkpointObject(inputs resource.PropertyMap, outputs resource.PropertyMap) resource.PropertyMap {
-	object := outputs
+	object := make(resource.PropertyMap, len(outputs)+1)
+	for k, v := range outputs {
+		object[k] = v
+	}
 	object["__inputs"] = resource.NewPropertyValue(inputs.Mappable())
 	return object
 }
